@@ -1,18 +1,15 @@
-# Build stage
+FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS base
+WORKDIR /app
+EXPOSE 80
+
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
-WORKDIR /app
-
-COPY *.csproj ./
+WORKDIR /src
+COPY ["CatalogService.csproj", "."]
 RUN dotnet restore
+COPY . .
+RUN dotnet publish -c Release -o /app/publish
 
-COPY . ./
-RUN dotnet publish -c Release -o /out
-
-# Runtime stage
-FROM mcr.microsoft.com/dotnet/aspnet:8.0
+FROM base AS final
 WORKDIR /app
-
-COPY --from=build /out ./
-
-EXPOSE 8080
+COPY --from=build /app/publish .
 ENTRYPOINT ["dotnet", "CatalogService.dll"]

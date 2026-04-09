@@ -1,0 +1,20 @@
+# Node
+node_modules/
+frontend/ui-app/node_modules/
+
+# .NET
+bin/
+obj/
+
+# VS Code
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment
+.env
