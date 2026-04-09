@@ -11,7 +11,7 @@ export default function ProductList() {
 
   return (
     <div>
-      <h1>Welcome to EasyShop </h1>
+      <h1>Welcome to EasyShop</h1>
       <h2>Products</h2>
       {products.map(p => (
         <div key={p.id}>
