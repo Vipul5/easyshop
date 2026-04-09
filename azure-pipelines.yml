@@ -51,11 +51,13 @@ steps:
 
 # Deploy to AKS
 - script: |
-    echo "$(kubeconfig)" > kubeconfig
+    echo "$KUBECONFIG_CONTENT" > kubeconfig
     export KUBECONFIG=$(pwd)/kubeconfig
 
-    kubectl apply -f k8s/
+    kubectl apply -f infra/k8s/
 
     kubectl rollout restart deployment catalog-deployment
     kubectl rollout restart deployment react-deployment
   displayName: 'Deploy to AKS'
+  env:
+    KUBECONFIG_CONTENT: $(kubeconfig)
