@@ -10,9 +10,9 @@ variables:
 steps:
 
 # Install Node.js
-- task: NodeTool@0
+- task: UseNode@1
   inputs:
-    versionSpec: '20.x'
+    version: '20.x'
   displayName: 'Install Node.js'
 
 # Build React App
@@ -31,8 +31,11 @@ steps:
 
 # Docker Login
 - script: |
-    echo "$(dockerPassword)" | docker login -u $(dockerUsername) --password-stdin
+    echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   displayName: 'Docker Login'
+  env:
+    DOCKER_USERNAME: $(dockerUsername)
+    DOCKER_PASSWORD: $(dockerPassword)
 
 # Build & Push Catalog Service
 - script: |
