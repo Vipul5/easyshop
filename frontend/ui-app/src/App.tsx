@@ -1,23 +1,26 @@
-import { useEffect, useState } from "react";
-import { getProducts } from "../src/services/api";
-import type { Product } from "../src/types/product";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
+import Login from "./pages/Login";
+import Register from "./pages/Register";
+import Products from "./pages/Products";
+import ProtectedRoute from "./components/ProtectedRoute";
 
-export default function ProductList() {
-  const [products, setProducts] = useState<Product[]>([]);
-
-  useEffect(() => {
-    getProducts().then(setProducts);
-  }, []);
-
+function App() {
   return (
-    <div>
-      <h1>Welcome to EasyShop</h1>
-      <h2>Products</h2>
-      {products.map(p => (
-        <div key={p.id}>
-          {p.name} - ₹{p.price}
-        </div>
-      ))}
-    </div>
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Login />} />
+        <Route path="/register" element={<Register />} />
+        <Route
+          path="/products"
+          element={
+            <ProtectedRoute>
+              <Products />
+            </ProtectedRoute>
+          }
+        />
+      </Routes>
+    </BrowserRouter>
   );
 }
+
+export default App;

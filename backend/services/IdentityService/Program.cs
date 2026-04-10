@@ -1,16 +1,17 @@
-using CatalogService.Data;
-using CatalogService.Models;
+using IdentityService.Data;
+using IdentityService.Services;
 using Microsoft.EntityFrameworkCore;
-using CatalogService.Interfaces;
-using CatalogService.Repositories;
-using CatalogService.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddDbContext<IdentityDbContext>(options =>
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]);
+
 builder.Services.AddAuthentication(options =>
 {
     options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
@@ -29,12 +30,10 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
-builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite("Data Source=products.db"));
-
+builder.Services.AddScoped<TokenService>();
 builder.Services.AddControllers();
-builder.Services.AddEndpointsApiExplorer();
 
+builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
     options.AddSecurityDefinition("Bearer", new Microsoft.OpenApi.Models.OpenApiSecurityScheme
@@ -44,7 +43,7 @@ builder.Services.AddSwaggerGen(options =>
         Scheme = "bearer",
         BearerFormat = "JWT",
         In = Microsoft.OpenApi.Models.ParameterLocation.Header,
-        Description = "Enter: Bearer {your token}"
+        Description = "Enter: Bearer {your JWT token}"
     });
 
     options.AddSecurityRequirement(new Microsoft.OpenApi.Models.OpenApiSecurityRequirement
@@ -63,8 +62,6 @@ builder.Services.AddSwaggerGen(options =>
     });
 });
 
-builder.Services.AddScoped<IProductRepository, ProductRepository>();
-builder.Services.AddScoped<IProductService, ProductService>();
 
 // CORS (already added)
 builder.Services.AddCors(options =>
@@ -75,18 +72,6 @@ builder.Services.AddCors(options =>
 
 var app = builder.Build();
 
-app.UseAuthorization();
-app.MapControllers();
-
-
-// Apply migrations automatically
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-    db.Database.Migrate();
-}
-
-// Configure pipeline
 if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
@@ -95,21 +80,9 @@ if (app.Environment.IsDevelopment())
 
 app.UseCors("AllowAll");
 
+app.UseAuthentication();
+app.UseAuthorization();
 
-
-using (var scope = app.Services.CreateScope())
-{
-    var db = scope.ServiceProvider.GetRequiredService<AppDbContext>();
-
-    if (!db.Products.Any())
-    {
-        db.Products.AddRange(
-            new Product { Name = "Laptop", Price = 50000 },
-            new Product { Name = "Phone", Price = 20000 }
-        );
-
-        db.SaveChanges();
-    }
-}
+app.MapControllers();
 
 app.Run();

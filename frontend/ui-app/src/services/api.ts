@@ -1,8 +1,20 @@
-const API_BASE = import.meta.env.VITE_API_URL;
+//const API_BASE = import.meta.env.VITE_API_URL;
 
-export async function getProducts() {
-  // const res = await fetch(`/api/products`);
-  const res = await fetch(`${API_BASE}/products`);
+import axios from "axios";
 
-  return res.json();
-}
+const API = axios.create({
+  baseURL: import.meta.env.VITE_API_URL,
+});
+
+// Attach token automatically
+API.interceptors.request.use((config) => {
+  const token = localStorage.getItem("token");
+
+  if (token) {
+    config.headers.Authorization = `Bearer ${token}`;
+  }
+
+  return config;
+});
+
+export default API;

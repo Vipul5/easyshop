@@ -1,31 +1,35 @@
 using Microsoft.AspNetCore.Mvc;
 using CatalogService.Interfaces;
 using CatalogService.Models;
+using Microsoft.AspNetCore.Authorization;
 
-namespace CatalogService.Controllers;
-
-[ApiController]
-[Route("api/[controller]")]
-public class ProductsController : ControllerBase
+namespace CatalogService.Controllers
 {
-    private readonly IProductService _service;
 
-    public ProductsController(IProductService service)
+    [Authorize]
+    [ApiController]
+    [Route("api/[controller]")]
+    public class ProductsController : ControllerBase
     {
-        _service = service;
-    }
+        private readonly IProductService _service;
 
-    [HttpGet]
-    public async Task<IActionResult> Get()
-    {
-        var products = await _service.GetProductsAsync();
-        return Ok(products);
-    }
+        public ProductsController(IProductService service)
+        {
+            _service = service;
+        }
 
-    [HttpPost]
-    public async Task<IActionResult> Create(Product product)
-    {
-        var created = await _service.CreateProductAsync(product);
-        return Ok(created);
+        [HttpGet]
+        public async Task<IActionResult> Get()
+        {
+            var products = await _service.GetProductsAsync();
+            return Ok(products);
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Create(Product product)
+        {
+            var created = await _service.CreateProductAsync(product);
+            return Ok(created);
+        }
     }
 }

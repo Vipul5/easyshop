@@ -22,3 +22,11 @@ spec:
                 name: react-service
                 port:
                   number: 80
+                  
+          - path: /api/auth
+            pathType: Prefix
+            backend:
+                service:
+                  name: identity-service
+                  port:
+                    number: 80

@@ -2,34 +2,55 @@ trigger:
   - main
 
 pool:
-  name: Default
+  name: Default   # local agent
 
 variables:
   dockerUsername: 'vipulpatodi'
 
 steps:
 
+# =========================
 # Install Node.js
+# =========================
 - task: UseNode@1
   inputs:
     version: '20.x'
   displayName: 'Install Node.js'
 
+
+# =========================
 # Build React App
+# =========================
 - script: |
-    cd frontend/ui-app
+    cd Frontend/ui-app
     npm install
     npm run build
   displayName: 'Build React App'
 
-# Build .NET App
+
+# =========================
+# Build Catalog Service
+# =========================
 - script: |
     cd backend/services/CatalogService
     dotnet restore
     dotnet build --configuration Release
-  displayName: 'Build .NET App'
+  displayName: 'Build Catalog Service'
 
+
+# =========================
+# Build Identity Service (NEW)
+# =========================
+- script: |
+    cd backend/services/IdentityService
+    dotnet restore
+    dotnet build --configuration Release
+  displayName: 'Build Identity Service'
+
+
+# =========================
 # Docker Login
+# =========================
 - script: |
     echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   displayName: 'Docker Login'
@@ -37,28 +58,57 @@ steps:
     DOCKER_USERNAME: $(dockerUsername)
     DOCKER_PASSWORD: $(dockerPassword)
 
-# Build & Push Catalog Service
+
+# =========================
+# Build & Push Catalog
+# =========================
 - script: |
     docker build -t $(dockerUsername)/easyshop-catalog-service:latest ./backend/services/CatalogService
     docker push $(dockerUsername)/easyshop-catalog-service:latest
   displayName: 'Build & Push Catalog Service'
 
-# Build & Push UI App
+
+# =========================
+# Build & Push Identity (NEW)
+# =========================
 - script: |
-    docker build -t $(dockerUsername)/easyshop-ui-app:latest ./frontend/ui-app
+    docker build -t $(dockerUsername)/easyshop-identity-service:latest ./backend/services/IdentityService
+    docker push $(dockerUsername)/easyshop-identity-service:latest
+  displayName: 'Build & Push Identity Service'
+
+
+# =========================
+# Build & Push UI
+# =========================
+- script: |
+    docker build -t $(dockerUsername)/easyshop-ui-app:latest ./Frontend/ui-app
     docker push $(dockerUsername)/easyshop-ui-app:latest
   displayName: 'Build & Push UI App'
 
+
+# =========================
 # Deploy to AKS
+# =========================
 - script: |
     echo "$KUBECONFIG_BASE64" | base64 -d > kubeconfig
     export KUBECONFIG=$(pwd)/kubeconfig
 
+    echo "Checking cluster connection..."
     kubectl get nodes
+
+    echo "Applying K8s configs..."
     kubectl apply -f infra/k8s/
 
+    echo "Restarting deployments..."
     kubectl rollout restart deployment catalog-deployment
+    kubectl rollout restart deployment identity-deployment
     kubectl rollout restart deployment react-deployment
+
+    echo "Checking rollout status..."
+    kubectl rollout status deployment catalog-deployment
+    kubectl rollout status deployment identity-deployment
+    kubectl rollout status deployment react-deployment
+
   displayName: 'Deploy to AKS'
   env:
     KUBECONFIG_BASE64: $(kubeconfigBase64)
