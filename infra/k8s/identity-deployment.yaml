@@ -16,5 +16,8 @@ spec:
       - name: identity-service
         image: vipulpatodi/easyshop-identity-service:latest
         imagePullPolicy: Always
+        env:
+        - name: ASPNETCORE_URLS
+          value: "http://+:80"
         ports:
         - containerPort: 80

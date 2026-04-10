@@ -26,7 +26,7 @@ export default function Products() {
         </div>
       ))}
       <br></br>
-      GUID: <span>f9e20de7-f407-4955-80db-049d5a459a02</span>
+      GUID: <span>6ec85706-1fcf-477b-8d6c-8e4041bd7e58</span>
     </div>
 
     
