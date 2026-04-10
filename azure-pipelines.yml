@@ -39,7 +39,7 @@ steps:
 
 
 # =========================
-# Build Identity Service (NEW)
+# Build Identity Service
 # =========================
 - script: |
     cd backend/services/IdentityService
@@ -69,7 +69,7 @@ steps:
 
 
 # =========================
-# Build & Push Identity (NEW)
+# Build & Push Identity 
 # =========================
 - script: |
     docker build -t $(dockerUsername)/easyshop-identity-service:latest ./backend/services/IdentityService

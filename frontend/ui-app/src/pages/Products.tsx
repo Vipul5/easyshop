@@ -26,7 +26,6 @@ export default function Products() {
         </div>
       ))}
       <br></br>
-      GUID: 3 <span>c3d15457-2168-440c-a919-590a6f195b30</span>
     </div>
     
   );

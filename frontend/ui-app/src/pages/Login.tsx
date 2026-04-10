@@ -29,13 +29,12 @@ export default function Login() {
       <br></br>
 
       <button onClick={handleLogin}>Login</button>
-
+      <br></br>   
       <p>
-              <br></br>
-
-
         New user? <Link to="/register">Register</Link>
       </p>
+       <br></br>
+      GUID: 3 <span>c3d15457-2168-440c-a919-590a6f195b30</span>
     </div>
   );
 }
