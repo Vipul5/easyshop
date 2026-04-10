@@ -34,7 +34,7 @@ export default function Login() {
         New user? <Link to="/register">Register</Link>
       </p>
        <br></br>
-      GUID: 3 <span>c3d15457-2168-440c-a919-590a6f195b30</span>
+      GUID: 4 <span>46e49b0e-6153-4e67-8f79-fc5b0020f547</span>
     </div>
   );
 }
