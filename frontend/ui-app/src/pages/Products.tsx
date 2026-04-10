@@ -25,6 +25,10 @@ export default function Products() {
           {p.name} - {p.price}
         </div>
       ))}
+      <br></br>
+      GUID: <span>f9e20de7-f407-4955-80db-049d5a459a02</span>
     </div>
+
+    
   );
 }

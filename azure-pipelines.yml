@@ -22,7 +22,7 @@ steps:
 # Build React App
 # =========================
 - script: |
-    cd Frontend/ui-app
+    cd frontend/ui-app
     npm install
     npm run build
   displayName: 'Build React App'
