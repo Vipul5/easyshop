@@ -81,7 +81,7 @@ steps:
 # Build & Push UI
 # =========================
 - script: |
-    docker build -t $(dockerUsername)/easyshop-ui-app:latest ./Frontend/ui-app
+    docker build -t $(dockerUsername)/easyshop-ui-app:latest ./frontend/ui-app
     docker push $(dockerUsername)/easyshop-ui-app:latest
   displayName: 'Build & Push UI App'
 
