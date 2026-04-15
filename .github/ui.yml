@@ -1,4 +1,4 @@
-name: UI CI/CD (Kind)
+name: UI CI/CD
 
 on:
   push:
@@ -7,21 +7,19 @@ on:
 
 jobs:
   build-and-deploy:
-    runs-on: self-hosted   # 🔥 IMPORTANT
+    runs-on: self-hosted
 
     steps:
-    # 1️⃣ Checkout code
-    - name: Checkout
-      uses: actions/checkout@v3
+      - name: Checkout
+        uses: actions/checkout@v3
 
-    # 2️⃣ Build Docker Image
-    - name: Build Docker Image
-      run: docker build -t easyshop-ui-app ./frontend/ui-app
+      - name: Build Docker Image
+        run: docker build -t easyshop-ui-app ./frontend/ui-app
 
-    # 3️⃣ Load image into Kind
-    - name: Load image into Kind
-      run: kind load docker-image easyshop-ui-app --name easyshop-cluster
+      - name: Load image into Kind
+        run: kind load docker-image easyshop-ui-app --name easyshop-cluster
 
-    # 4️⃣ Deploy to Kubernetes
-    - name: Deploy UI
-      run: kubectl apply -f infra/k8s/react-deployment.yaml
+      - name: Deploy UI
+        run: |
+          kubectl apply -f infra/k8s/react-deployment.yaml
+          kubectl apply -f infra/k8s/react-service.yaml
