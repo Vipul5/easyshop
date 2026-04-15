@@ -23,3 +23,4 @@ jobs:
         run: |
           kubectl apply -f infra/k8s/react-deployment.yaml
           kubectl apply -f infra/k8s/react-service.yaml
+          kubectl rollout restart deployment react-deployment
