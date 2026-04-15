@@ -1,10 +1,25 @@
-name: Test Pipeline
+name: UI CI/CD
 
 on:
   push:
+    paths:
+      - 'frontend/ui-app/**'
 
 jobs:
-  test:
+  build-and-deploy:
     runs-on: self-hosted
+
     steps:
-      - run: echo "Pipeline is working"
+      - name: Checkout
+        uses: actions/checkout@v3
+
+      - name: Build Docker Image
+        run: docker build -t easyshop-ui-app ./frontend/ui-app
+
+      - name: Load image into Kind
+        run: kind load docker-image easyshop-ui-app --name easyshop-cluster
+
+      - name: Deploy UI
+        run: |
+          kubectl apply -f infra/k8s/react-deployment.yaml
+          kubectl apply -f infra/k8s/react-service.yaml
