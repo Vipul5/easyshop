@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Authorization;
 namespace CatalogService.Controllers
 {
 
-    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
