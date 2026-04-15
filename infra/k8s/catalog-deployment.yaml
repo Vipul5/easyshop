@@ -1,7 +1,7 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: catalog-deployment   
+  name: catalog-deployment
 spec:
   replicas: 1
   selector:
@@ -14,16 +14,10 @@ spec:
     spec:
       containers:
         - name: catalog
-          image: vipulpatodi/easyshop-catalog-service:latest
-          imagePullPolicy: Always 
+          image: easyshop-catalog-service
+          imagePullPolicy: Never
           ports:
-            - containerPort: 8080
-
-          volumeMounts:
-            - name: catalog-storage
-              mountPath: /data
-
-          volumes:
-            - name: catalog-storage
-              persistentVolumeClaim:
-                claimName: catalog-pvc
+            - containerPort: 80
+          env:
+            - name: ASPNETCORE_URLS
+              value: "http://+:80"
