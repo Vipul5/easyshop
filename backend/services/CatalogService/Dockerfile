@@ -9,6 +9,10 @@ RUN dotnet restore
 COPY . .
 RUN dotnet publish -c Release -o /app/publish
 
+RUN mkdir /data
+ENV ASPNETCORE_ENVIRONMENT=Docker
+VOLUME ["/data"]
+
 FROM base AS final
 WORKDIR /app
 COPY --from=build /app/publish .

@@ -23,11 +23,18 @@ namespace IdentityService.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(RegisterDto dto)
         {
+              var exixtingUser = await _context.Users
+                .FirstOrDefaultAsync(x => x.UserName == dto.UserName);
+
+            if(exixtingUser != null)
+            {
+                return BadRequest("Already registered");
+            }
+
             var user = new User
             {
-                Email = dto.Email,
-                PasswordHash = BCrypt.Net.BCrypt.HashPassword(dto.Password),
-                Role = "User"
+                UserName = dto.UserName,
+                Password = BCrypt.Net.BCrypt.HashPassword(dto.Password)
             };
 
             _context.Users.Add(user);
@@ -40,14 +47,19 @@ namespace IdentityService.Controllers
         public async Task<IActionResult> Login(LoginDto dto)
         {
             var user = await _context.Users
-                .FirstOrDefaultAsync(x => x.Email == dto.Email);
+                .FirstOrDefaultAsync(x => x.UserName == dto.UserName);
 
-            if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.PasswordHash))
+            if (user == null || !BCrypt.Net.BCrypt.Verify(dto.Password, user.Password))
                 return Unauthorized("Invalid credentials");
 
             var token = _tokenService.GenerateToken(user);
 
-            return Ok(new { token });
+          return Ok(new
+            {
+                userId = user.Id,
+                userName = user.UserName,
+                token = token
+            });
         }
     }
 }

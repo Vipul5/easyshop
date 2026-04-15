@@ -1,0 +1,28 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: cart-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: cart
+  template:
+    metadata:
+      labels:
+        app: cart
+    spec:
+      containers:
+      - name: cart
+        image: vipulpatodi/easyshop-cart-service
+        ports:
+        - containerPort: 80
+
+        volumeMounts:
+        - name: cart-storage
+          mountPath: /data   
+
+        volumes:
+        - name: cart-storage
+          persistentVolumeClaim:
+            claimName: cart-pvc

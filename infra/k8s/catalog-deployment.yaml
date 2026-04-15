@@ -18,3 +18,12 @@ spec:
           imagePullPolicy: Always 
           ports:
             - containerPort: 8080
+
+          volumeMounts:
+            - name: catalog-storage
+              mountPath: /data
+
+          volumes:
+            - name: catalog-storage
+              persistentVolumeClaim:
+                claimName: catalog-pvc

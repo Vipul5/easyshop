@@ -21,4 +21,19 @@ public class ProductService : IProductService
     {
         return await _repository.AddAsync(product);
     }
+
+     public async Task<List<Product>> GetProductsBySearchAsync(string query)
+    {
+        return await _repository.GetProductsBySearchAsync(query);
+    }
+
+    public async Task<List<Product>> GetByCategory(int categoryId)
+    {
+        return await _repository.GetByCategory(categoryId);
+    }
+    
+    public async Task<Product> GetById(int id)
+    {
+          return await _repository.GetById(id);
+    }
 }

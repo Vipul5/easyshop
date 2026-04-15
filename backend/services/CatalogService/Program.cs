@@ -29,8 +29,14 @@ builder.Services.AddAuthentication(options =>
     };
 });
 
+if (builder.Environment.EnvironmentName == "Docker")
+{
+    builder.Configuration.AddJsonFile("appsettings.Docker.json", optional: true);
+}
+
 builder.Services.AddDbContext<AppDbContext>(options =>
-    options.UseSqlite("Data Source=products.db"));
+    options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
+
 
 builder.Services.AddControllers();
 builder.Services.AddEndpointsApiExplorer();
@@ -66,7 +72,6 @@ builder.Services.AddSwaggerGen(options =>
 builder.Services.AddScoped<IProductRepository, ProductRepository>();
 builder.Services.AddScoped<IProductService, ProductService>();
 
-// CORS (already added)
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowAll",
@@ -108,6 +113,14 @@ using (var scope = app.Services.CreateScope())
             new Product { Name = "Phone", Price = 20000 }
         );
 
+        db.SaveChanges();
+    }
+     if (!db.Categories.Any())
+    {
+        db.Categories.AddRange(
+            new Category { Id = 1, Name = "Electronics" },
+            new Category { Id = 2, Name = "Apparel" }
+        );
         db.SaveChanges();
     }
 }

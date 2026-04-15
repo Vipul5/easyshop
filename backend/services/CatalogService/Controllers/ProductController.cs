@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Authorization;
 namespace CatalogService.Controllers
 {
 
-    [Authorize]
+    //[Authorize]
     [ApiController]
     [Route("api/[controller]")]
     public class ProductsController : ControllerBase
@@ -30,6 +30,29 @@ namespace CatalogService.Controllers
         {
             var created = await _service.CreateProductAsync(product);
             return Ok(created);
+        }
+
+        [HttpGet("search")]
+        public async Task<IActionResult> Search(string query= "")
+        {
+            var products = await _service.GetProductsBySearchAsync(query);
+            return Ok(products);
+        }
+
+        [HttpGet("category/{categoryId}")]
+        public async Task<IActionResult> Search(int categoryId)
+        {
+           var products = await _service.GetByCategory(categoryId);
+            return Ok(products);
+        }
+
+        [HttpGet("{id}")]
+        public async Task<IActionResult> GetById(int id)
+        {
+            var product = await _service.GetById(id);
+            if (product == null) return NotFound();
+
+            return Ok(product);
         }
     }
 }

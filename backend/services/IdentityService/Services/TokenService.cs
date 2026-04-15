@@ -19,8 +19,7 @@ namespace IdentityService.Services
         {
             var claims = new[]
             {
-                new Claim(ClaimTypes.Name, user.Email),
-                new Claim(ClaimTypes.Role, user.Role),
+                new Claim(ClaimTypes.Name, user.UserName),
                 new Claim("UserId", user.Id.ToString())
             };
 

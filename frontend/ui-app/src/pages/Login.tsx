@@ -1,40 +1,57 @@
 import { useState } from "react";
-import { login } from "../services/authService";
-import { useNavigate, Link } from "react-router-dom";
+import { setAuth } from "../services/auth";
+import { useNavigate } from "react-router-dom";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async () => {
-    try {
-      const res = await login(email, password);
 
-      localStorage.setItem("token", res.token);
+     try {
+              const res = await fetch("http://localhost:5091/api/auth/login", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({ username, password }),
+          });
 
-      navigate("/products");
-    } catch {
-      alert("Invalid credentials");
-    }
+          const data = await res.json();
+
+          if (data) {
+            setAuth(data);
+            navigate("/"); // 🔥 go back to home
+          }
+        } catch (error: any) {
+          alert("Invalid Credentials");
+        }
+
+   
   };
 
   return (
     <div>
       <h2>Login</h2>
 
-      <input placeholder="Email" onChange={(e) => setEmail(e.target.value)} />
-      <br></br>
-      <input placeholder="Password" type="password" onChange={(e) => setPassword(e.target.value)} />
-      <br></br>
-
+      <input
+        placeholder="Username"
+        onChange={(e) => setUsername(e.target.value)}
+      />
+<br></br>
+      <input
+        type="password"
+        placeholder="Password"
+        onChange={(e) => setPassword(e.target.value)}
+      />
+<br></br>
       <button onClick={handleLogin}>Login</button>
-      <br></br>   
+<br></br>
+<br></br>
       <p>
-        New user? <Link to="/register">Register</Link>
-      </p>
-       <br></br>
-      GUID: 4 <span>46e49b0e-6153-4e67-8f79-fc5b0020f547</span>
+           New user? <button onClick={() => navigate("/register")}>Register</button>
+       </p>
     </div>
   );
 }

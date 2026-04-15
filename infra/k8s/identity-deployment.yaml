@@ -21,3 +21,12 @@ spec:
           value: "http://+:80"
         ports:
         - containerPort: 80
+
+        volumeMounts:
+        - name: identity-storage
+          mountPath: /data
+
+        volumes:
+        - name: identity-storage
+          persistentVolumeClaim:
+            claimName: identity-pvc

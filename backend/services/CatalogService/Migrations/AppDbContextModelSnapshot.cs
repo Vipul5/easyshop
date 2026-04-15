@@ -16,11 +16,49 @@ namespace CatalogService.Migrations
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "8.0.0");
 
+            modelBuilder.Entity("CatalogService.Models.Category", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Categories");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Name = "Electronics"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Name = "Apparel"
+                        });
+                });
+
             modelBuilder.Entity("CatalogService.Models.Product", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
                         .HasColumnType("INTEGER");
+
+                    b.Property<int>("CategoryId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<string>("Description")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Image")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
 
                     b.Property<string>("Name")
                         .IsRequired()
@@ -32,6 +70,134 @@ namespace CatalogService.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Products");
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            CategoryId = 1,
+                            Description = "Smartphone with latest features",
+                            Image = "https://res.cloudinary.com/dcndo0hkp/image/upload/v1776148244/399694-smartphones-apple-iphone-11-10008711_nufuwo.png",
+                            Name = "Mobile",
+                            Price = 15000m
+                        },
+                        new
+                        {
+                            Id = 2,
+                            CategoryId = 1,
+                            Description = "High performance laptop for work and gaming",
+                            Image = "https://res.cloudinary.com/dcndo0hkp/image/upload/v1776148760/36809cf3-480b-47a5-94f0-e1d5e70c58c0_3.fcc0d6494b0e279a13c32c80c28abfa3_ahnzgk.jpg",
+                            Name = "Laptop",
+                            Price = 60000m
+                        },
+                        new
+                        {
+                            Id = 3,
+                            CategoryId = 1,
+                            Description = "Smart LED TV with 4K resolution",
+                            Image = "https://res.cloudinary.com/dcndo0hkp/image/upload/v1776148371/Heavy-Boxy-Tshirt-Back-1-1-Product_m8t1lx.jpg",
+                            Name = "TV",
+                            Price = 40000m
+                        },
+                        new
+                        {
+                            Id = 4,
+                            CategoryId = 1,
+                            Description = "Energy efficient air conditioner",
+                            Image = "https://res.cloudinary.com/dcndo0hkp/image/upload/v1776148778/815QEibJCwL._SL1500_gxk7pv.jpg",
+                            Name = "AC",
+                            Price = 35000m
+                        },
+                        new
+                        {
+                            Id = 5,
+                            CategoryId = 1,
+                            Description = "Double door refrigerator",
+                            Image = "https://res.cloudinary.com/dcndo0hkp/image/upload/v1776148804/Fridge_Thumbnail__0016_DFF180E2SSDB_ej0ae6.jpg",
+                            Name = "Fridge",
+                            Price = 25000m
+                        },
+                        new
+                        {
+                            Id = 6,
+                            CategoryId = 1,
+                            Description = "Table fan with high speed motor",
+                            Image = "https://res.cloudinary.com/dcndo0hkp/image/upload/v1776148817/hampton-bay-personal-fans-tx-1204d-64_1000_qy4gdp.jpg",
+                            Name = "Fan",
+                            Price = 3000m
+                        },
+                        new
+                        {
+                            Id = 7,
+                            CategoryId = 1,
+                            Description = "headphone with noise control",
+                            Image = "https://res.cloudinary.com/dcndo0hkp/image/upload/v1776148913/1_6122ca29-5373-4c4f-97c2-0728ea368fc1_oacnsy.jpg",
+                            Name = "Headphone",
+                            Price = 8000m
+                        },
+                        new
+                        {
+                            Id = 8,
+                            CategoryId = 1,
+                            Description = "Kitchen chimney for smoke control",
+                            Image = "https://res.cloudinary.com/dcndo0hkp/image/upload/v1776148936/Tune-C-_uy8cec.png",
+                            Name = "Chimney",
+                            Price = 12000m
+                        },
+                        new
+                        {
+                            Id = 9,
+                            CategoryId = 1,
+                            Description = "Portable induction cooktop",
+                            Image = "https://res.cloudinary.com/dcndo0hkp/image/upload/v1776148953/8901365419587-8_cgru8f.jpg",
+                            Name = "Induction ",
+                            Price = 4000m
+                        },
+                        new
+                        {
+                            Id = 10,
+                            CategoryId = 2,
+                            Description = "Comfortable cotton t-shirt",
+                            Image = "https://res.cloudinary.com/dcndo0hkp/image/upload/v1776148371/Heavy-Boxy-Tshirt-Back-1-1-Product_m8t1lx.jpg",
+                            Name = "T-Shirt",
+                            Price = 800m
+                        },
+                        new
+                        {
+                            Id = 11,
+                            CategoryId = 2,
+                            Description = "Stylish running shoes",
+                            Image = "https://res.cloudinary.com/dcndo0hkp/image/upload/v1776148396/DressSneakersInBlackWithWhiteOutsole.rightangle_gagupm.jpg",
+                            Name = "Shoes",
+                            Price = 2500m
+                        },
+                        new
+                        {
+                            Id = 12,
+                            CategoryId = 2,
+                            Description = "Casual wear pants",
+                            Image = "https://res.cloudinary.com/dcndo0hkp/image/upload/v1776148973/JM7144_BLK_F_2_1000x_yqsniz.jpg",
+                            Name = "Pant",
+                            Price = 1500m
+                        },
+                        new
+                        {
+                            Id = 13,
+                            CategoryId = 2,
+                            Description = "Comfortable track pants for workouts",
+                            Image = "https://res.cloudinary.com/dcndo0hkp/image/upload/v1776148997/s-l1200_i1jzxw.jpg",
+                            Name = "Track Pant",
+                            Price = 1200m
+                        },
+                        new
+                        {
+                            Id = 14,
+                            CategoryId = 2,
+                            Description = "Casual wear cap",
+                            Image = "https://res.cloudinary.com/dcndo0hkp/image/upload/v1776148384/R1370284-01_melfta.jpg",
+                            Name = "Cap",
+                            Price = 300m
+                        });
                 });
 #pragma warning restore 612, 618
         }

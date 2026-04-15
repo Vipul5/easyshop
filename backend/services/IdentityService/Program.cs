@@ -7,6 +7,11 @@ using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
+if (builder.Environment.EnvironmentName == "Docker")
+{
+    builder.Configuration.AddJsonFile("appsettings.Docker.json", optional: true);
+}
+
 builder.Services.AddDbContext<IdentityDbContext>(options =>
     options.UseSqlite(builder.Configuration.GetConnectionString("DefaultConnection")));
 
@@ -84,7 +89,7 @@ app.UseAuthentication();
 app.UseAuthorization();
 
 app.MapControllers();
-app.Urls.Add("http://0.0.0.0:80");
+// app.Urls.Add("http://0.0.0.0:80");
 
 using (var scope = app.Services.CreateScope())
 {
