@@ -1,0 +1,21 @@
+name: Cart CI/CD
+
+on:
+  push:
+    paths:
+      - 'backend/services/CartService/**'
+
+jobs:
+  build-and-deploy:
+    runs-on: self-hosted
+
+    steps:
+      - uses: actions/checkout@v3
+
+      - run: docker build -t easyshop-cart-service ./backend/services/CartService
+      - run: kind load docker-image easyshop-cart-service --name easyshop-cluster
+
+      - run: |
+          kubectl apply -f infra/k8s/cart-deployment.yaml
+          kubectl apply -f infra/k8s/cart-service.yaml
+          kubectl rollout restart deployment cart-deployment

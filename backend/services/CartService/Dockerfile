@@ -1,12 +1,19 @@
+# Build stage
+FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
+WORKDIR /app
+
+COPY *.csproj ./
+RUN dotnet restore
+
+COPY . ./
+RUN dotnet publish -c Release -o out
+
+# Runtime stage
 FROM mcr.microsoft.com/dotnet/aspnet:8.0
 WORKDIR /app
 
-COPY bin/Release/net8.0/publish .
+COPY --from=build /app/out .
 
-RUN mkdir /data
-
-ENV ASPNETCORE_ENVIRONMENT=Docker
-
-VOLUME ["/data"]
+ENV ASPNETCORE_URLS=http://+:80
 
 ENTRYPOINT ["dotnet", "CartService.dll"]

@@ -13,16 +13,11 @@ spec:
         app: cart
     spec:
       containers:
-      - name: cart
-        image: vipulpatodi/easyshop-cart-service
-        ports:
-        - containerPort: 80
-
-        volumeMounts:
-        - name: cart-storage
-          mountPath: /data   
-
-        volumes:
-        - name: cart-storage
-          persistentVolumeClaim:
-            claimName: cart-pvc
+        - name: cart
+          image: easyshop-cart-service
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          env:
+            - name: ASPNETCORE_URLS
+              value: "http://+:80"

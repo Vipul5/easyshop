@@ -6,27 +6,18 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: identity-service
+      app: identity
   template:
     metadata:
       labels:
-        app: identity-service
+        app: identity
     spec:
       containers:
-      - name: identity-service
-        image: vipulpatodi/easyshop-identity-service:latest
-        imagePullPolicy: Always
-        env:
-        - name: ASPNETCORE_URLS
-          value: "http://+:80"
-        ports:
-        - containerPort: 80
-
-        volumeMounts:
-        - name: identity-storage
-          mountPath: /data
-
-        volumes:
-        - name: identity-storage
-          persistentVolumeClaim:
-            claimName: identity-pvc
+        - name: identity
+          image: easyshop-identity-service
+          imagePullPolicy: Never
+          ports:
+            - containerPort: 80
+          env:
+            - name: ASPNETCORE_URLS
+              value: "http://+:80"

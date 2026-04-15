@@ -3,9 +3,10 @@ kind: Service
 metadata:
   name: cart-service
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: cart
   ports:
     - port: 80
       targetPort: 80
+      nodePort: 30009
