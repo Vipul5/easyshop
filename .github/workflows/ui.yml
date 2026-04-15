@@ -1,0 +1,10 @@
+name: Test Pipeline
+
+on:
+  push:
+
+jobs:
+  test:
+    runs-on: self-hosted
+    steps:
+      - run: echo "Pipeline is working"
