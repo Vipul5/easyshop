@@ -45,13 +45,17 @@ export default function Login() {
         placeholder="Password"
         onChange={(e) => setPassword(e.target.value)}
       />
-<br></br>
+      <br></br>
       <button onClick={handleLogin}>Login</button>
-<br></br>
-<br></br>
+      <br></br>
+      <br></br>
       <p>
            New user? <button onClick={() => navigate("/register")}>Register</button>
        </p>
+       <br></br>
+       <br></br>
+
+       GUID 1:<span>01d1c14c-fdc9-42ac-ab80-ec9f311778d5</span>
     </div>
   );
 }
