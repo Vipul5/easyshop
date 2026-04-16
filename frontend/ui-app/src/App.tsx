@@ -8,7 +8,7 @@ import Register from "./pages/Register";
 function App() {
   return (
     <BrowserRouter>
-      <Header />   {/* 🔥 GLOBAL HEADER */}
+      <Header />   {/* GLOBAL HEADER */}
 
       <Routes>
         <Route path="/" element={<Home />} />

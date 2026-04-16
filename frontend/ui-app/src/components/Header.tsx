@@ -9,7 +9,7 @@ export default function Header() {
    window.location.href = "/";  
   };
 
-  const loggedIn = isLoggedIn();   // 🔥 always fresh value
+  const loggedIn = isLoggedIn();   
 
   return (
     <div style={{

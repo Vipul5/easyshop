@@ -24,7 +24,7 @@ const AUTH_URL = `${import.meta.env.VITE_AUTH_URL}/auth`;
 
           if (data) {
             setAuth(data);
-            navigate("/"); // 🔥 go back to home
+            navigate("/"); // 
           }
         } catch (error: any) {
           alert("Invalid Credentials");

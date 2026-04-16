@@ -12,7 +12,7 @@ export default function Cart() {
 
     const cartItems = await getCart(user.userId);
 
-    // 🔥 Combine cart + product
+    //  Combine cart + product
     const detailedItems = await Promise.all(
       cartItems.map(async (item: any) => {
         const product = await getProductById(item.productId);
@@ -61,10 +61,10 @@ export default function Cart() {
           gap: "15px",
           alignItems: "center"
         }}>
-          {/* 🖼 Image */}
+          {/*  Image */}
           <img src={item.product.image} width={100} />
 
-          {/* 📦 Details */}
+          {/*  Details */}
           <div style={{ flex: 1 }}>
             <h3>{item.product.name}</h3>
             <p>{item.product.description}</p>
@@ -72,7 +72,7 @@ export default function Cart() {
             <p>Quantity: {item.quantity}</p>
           </div>
 
-          {/* ❌ Remove */}
+          {/*  Remove */}
           <button onClick={() => handleRemove(item.id)}>
             Remove
           </button>
