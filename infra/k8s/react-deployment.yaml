@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: react
-          image: easyshop-ui-app
+          image: easyshop-ui-app:v1
           imagePullPolicy: Never
           ports:
             - containerPort: 80

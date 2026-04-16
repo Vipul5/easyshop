@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: identity
-          image: easyshop-identity-service
+          image: easyshop-identity-service:v1
           imagePullPolicy: Never
           ports:
             - containerPort: 80

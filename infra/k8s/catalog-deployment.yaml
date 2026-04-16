@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: catalog
-          image: easyshop-catalog-service
+          image: easyshop-catalog-service:v1
           imagePullPolicy: Never
           ports:
             - containerPort: 80

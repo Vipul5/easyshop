@@ -12,7 +12,7 @@ const AUTH_URL = `${import.meta.env.VITE_AUTH_URL}/auth`;
   const handleLogin = async () => {
 
      try {
-              const res = await fetch(`${AUTH_URL}/auth/login`, {
+              const res = await fetch(`${AUTH_URL}/login`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
@@ -54,10 +54,7 @@ const AUTH_URL = `${import.meta.env.VITE_AUTH_URL}/auth`;
       <p>
            New user? <button onClick={() => navigate("/register")}>Register</button>
        </p>
-       <br></br>
-       <br></br>
-
-       GUID 3:<span>01d1c14c-fdc9-42ac-ab80-ec9f311778d5</span>
+      
     </div>
   );
 }
