@@ -10,21 +10,16 @@ jobs:
     runs-on: self-hosted
 
     steps:
-      # 1️⃣ Checkout code
-      - name: Checkout
-        uses: actions/checkout@v3
+      - uses: actions/checkout@v3
 
-      # 2️⃣ Build Docker Image
-      - name: Build Docker Image
-        run: docker build -t easyshop-catalog-service ./backend/services/CatalogService
+      - name: Set tag
+        run: echo "IMAGE_TAG=$(date +%s)" >> $GITHUB_ENV
 
-      # 3️⃣ Load image into Kind
-      - name: Load image into Kind
-        run: kind load docker-image easyshop-catalog-service --name easyshop-cluster
+      - name: Build image
+        run: docker build --platform=linux/amd64 -t easyshop-catalog-service:${{ env.IMAGE_TAG }} ./backend/services/CatalogService
 
-      # 4️⃣ Deploy to Kubernetes
-      - name: Deploy Catalog
-        run: |
-          kubectl apply -f infra/k8s/catalog-deployment.yaml
-          kubectl apply -f infra/k8s/catalog-service.yaml
-          kubectl rollout restart deployment catalog-deployment
+      - name: Load into Kind
+        run: kind load docker-image easyshop-catalog-service:${{ env.IMAGE_TAG }} --name easyshop-cluster
+
+      - name: Deploy
+        run: kubectl set image deployment/catalog-deployment catalog=easyshop-catalog-service:${{ env.IMAGE_TAG }}
