@@ -21,12 +21,3 @@ spec:
           env:
             - name: ASPNETCORE_URLS
               value: "http://+:80"
-
-          volumeMounts:
-            - mountPath: /app/data
-              name: catalog-storage
-
-      volumes:
-          - name: catalog-storage
-            persistentVolumeClaim:
-              claimName: catalog-pvc

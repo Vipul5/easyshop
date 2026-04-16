@@ -7,10 +7,12 @@ export default function Login() {
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
 
+const AUTH_URL = `${import.meta.env.VITE_AUTH_URL}/auth`;
+
   const handleLogin = async () => {
 
      try {
-              const res = await fetch("http://localhost:5091/api/auth/login", {
+              const res = await fetch(`${AUTH_URL}/auth/login`, {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
